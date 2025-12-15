@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from multi_agent.schema import AgentState
+from langchain_core.messages import HumanMessage
 
 class RAGNode:
     
@@ -14,9 +15,9 @@ class RAGNode:
 
         prompt = f"Use the following context to answer the question.\n\nContext: {context}\n\nQuestion: {user_query}\n\nAnswer:"
 
-        response = self.llm.chat([{"role": "user", "content": prompt}])
+        response = self.llm.invoke([HumanMessage(content=prompt)])
 
         return {
-            "response": response['choices'][0]['message']['content'],
+            "response": response.content,
             "next": "end"
         }
